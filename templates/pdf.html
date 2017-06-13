@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			body {
+				font-family: Helvetica, Arial, sans-serif;
+			}
+			#payment_info {
+				float: left;
+			}
+
+			#total_price {
+				float: right;
+			}
+
+			#payment_info, #total_price {
+				margin: 1em;
+			}
+
+			table {
+				border-collapse: collapse;
+				width: 100%;
+			}
+
+			th, td {
+			    border-bottom: 2px solid #ddd;
+			    padding: 15px;
+			    vertical-align: middle;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>{{name}}</h1>
+		{{email}}<br>
+		{{tel}}
+
+		<h2>Invoice</h2>
+		<h3>Submitted on {{today}}</h3>
+
+		<h2>Invoice for</h2>
+		Instagram/Facebook Inc./Twitter Inc.
+
+		<h2>Payable to</h2>
+
+		<table>
+			<tr id="table_head">
+				<th>Description</th>
+				<th>Qty</th>
+				<th>Unit Price</th>
+				<th>Total Price</th>
+			</tr>
+			{% for message in posts %}
+			<tr>
+				<td>Post</td>
+				<td>1</td>
+				<td>$0.057</td>
+				<td>$0.057</td>
+			</tr>
+			{% endfor %}
+			<tr class="subtotal">
+				<td></td>
+				<td></td>
+				<td>Subtotal</td>
+				<td>${{ postcount * 57 / 1000.0 }}</td>
+			</tr>
+		</table>
+
+		<div id="payment_info">
+			Payment Information:<br>
+			Venmo: {{venmo}}<br>
+			Paypal: {{paypal}}<br>
+			Mailing Address:
+			<blockquote>{{mail1}}<br>{{mail2}}<br>{{mail3}}</blockquote>
+		</div>
+
+		<div id="total_price">${{ postcount * 57 / 1000.0 }}</div>
+	</body>
+</html>

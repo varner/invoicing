@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			body, input, select {
+				font-family: Helvetica, Arial, sans-serif;
+			}
+
+			#add_post {
+				cursor: pointer;
+				border: 2px solid black;
+				padding: 2px;
+				float: left;
+			}
+
+			#posts {
+				border: 1px solid red;
+			}
+
+			li {
+				margin: .5em;
+			}
+
+			table {
+			    counter-reset: rowNumber;
+			    border-collapse: collapse; 
+			}
+			
+			table tr:not(:first-child) {
+			    counter-increment: rowNumber;
+			}
+
+			table tr:last-child td{
+				border: none;
+			}
+			
+			table tr td:first-child::before {
+			    content: counter(rowNumber);
+			    min-width: 1em;
+			    margin-right: 0.5em;
+			}
+
+			table tr:last-child td {
+				border-right: none;
+			}
+
+			td, th {
+				border-bottom: 2px solid black;
+				outline: 0px;
+				padding: .5em;
+			}
+
+			.delete_cell, .hell {
+				border-bottom: none;
+				color: red;
+				vertical-align: middle;
+				opacity: 0.2;
+			}
+
+			.delete_cell:hover {
+				opacity: 1;
+				cursor: pointer;
+			}
+			
+		</style>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	</head>
+	<body>
+		<h1>INVOICING TOOL</h1>
+		Some sort of description. This tool will help you fax your invoices to people! Wow!
+
+		<form method="POST">
+			<h2>Contact Info</h2>
+			<label>
+				NAME: <input type="text" placeholder="NAME" required name="name"/>
+			</label>
+			<br />
+			<label>
+				EMAIL: <input type="email" placeholder="EMAIL" required name="email" />
+			</label>
+			<br />
+			<label>
+				PHONE: <input type="text" placeholder="PHONE" name="phone" />
+			</label>
+
+			<h2>Post Information</h2>
+
+			<table id="invoice">
+				<tr>
+					<th></th>
+					<th>NETWORK</th>
+					<th>POSTED ON</th>
+					<th>URL</th>
+					<th>QTY</th>
+					<th>UNIT PRICE</th>
+					<th>TOTAL PRICE</th>
+				</tr>
+
+				<tr><td></td><td><select name="000_site"><option value="facebook">FACEBOOK</option><option value="instagram">INSTAGRAM</option><option value="snapchat">SNAPCHAT</option><option value="twitter">TWITTER</option></select>
+					</td><td><input name="000_date" type="date" required/></td><td><input name="000_url" type="text" placeholder="URL" /></td><td>1</td><td>$0.059</td><td>$0.059</td><td class="hell"></td></tr>
+				<tr id="subtotal">
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>SUBTOTAL</td>
+					<td><span id="total_charge">$0.059</span></td>
+				</tr>
+			</table>
+
+			<div id="add_post">ADD ITEM +</div>
+
+			<h2>Payment Information</h2>
+					<label>
+						<input type='text' placeholder='PAYPAL' name="paypal" />
+						<input type='text' placeholder='VENMO' name="venmo" />
+						<input type='text' placeholder='MAIL' name="address" />
+					</label>
+			<br /><br/>
+			<input type="submit" />
+		</form>
+	
+		<script>
+			function pad(n, width, z) {
+			  z = z || '0';
+			  n = n + '';
+			  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+			}
+
+			var post_count = 1;
+
+			$('#add_post').click(function() {
+				var post_id = pad(post_count, 3);
+				//
+				console.log("hell yeh");
+				post_count++;
+
+				$('#subtotal').before('<tr><td></td><td><select name="' + post_id + '_site"><option value="facebook">FACEBOOK</option><option value="instagram">INSTAGRAM</option><option value="snapchat">SNAPCHAT</option><option value="twitter">TWITTER</option></select></td><td><input name="' + post_id + '_date" type="date" required /></td><td><input name="' + post_id + '_url" type="text" placeholder="URL" /></td><td>1</td><td>$0.059</td><td>$0.059</td><td class="delete_cell">✘</td></tr>');
+				updateSubtotal();
+
+				$('.delete_cell').on('click', function() {
+					$(this).closest('tr').remove();
+					updateSubtotal();
+				});
+			});
+
+			$('.delete_cell').on('click', function() {
+				$(this).closest('tr').remove();
+				console.log("fcuk");
+				updateSubtotal();
+			});
+
+			function updateSubtotal() {
+				var rows = document.getElementById('invoice').getElementsByTagName("tr").length - 2;
+				$('#total_charge').text("$" + (Math.round( rows * 0.059 * 1000 + Number.EPSILON ) / 1000));
+
+
+			}
+		</script>
+	</body>
+</html>
