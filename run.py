@@ -19,6 +19,11 @@ app = Flask(__name__)
 @app.route("/", methods=['POST', 'GET'])
 def hello():
     if request.method == 'POST':
+        # Ensure virtualenv path is part of PATH env var
+        os.environ['PATH'] += os.pathsep + os.path.dirname(sys.executable)  
+        WKHTMLTOPDF_CMD = subprocess.Popen(
+            ['which', os.environ.get('WKHTMLTOPDF_BINARY', 'wkhtmltopdf')], # Note we default to 'wkhtmltopdf' as the binary name
+            stdout=subprocess.PIPE).communicate()[0].strip()
         print request.form
         rendered = ''
         posts = organizeItems(request.form)
@@ -65,6 +70,7 @@ def woof():
     return "yerp"
 
 def renderPDF(render, filename):
+    pdfkit_config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF_CMD)
     options = {
             'print-media-type': '',
             'page-size': 'A4',
@@ -74,7 +80,7 @@ def renderPDF(render, filename):
             'margin-top': '0.75in',
             'dpi': 1920
         }
-    pdfkit.from_string(render, filename, options=options)
+    pdfkit.from_string(render, filename, options=options, configuration=pdfkit_config)
     return filename
 
 def organizeItems(form):
