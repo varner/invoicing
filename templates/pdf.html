@@ -2,6 +2,29 @@
 <html>
 	<head>
 		<style type="text/css">
+			#title {
+				float: right;
+				font-weight: bold;
+				font-size: 2em;
+				color: gray;
+				text-align: right;
+				margin-top: 0.5em;
+				line-height: 0.5em;
+			}
+
+			#invoice {
+				font-size: 10px;
+			}
+
+			#address {
+				margin-bottom: .3em;
+			}
+
+			#name {
+				text-align: left;
+				font-weight: bold;
+			}
+
 			body {
 				font-family: Helvetica, Arial, sans-serif;
 			}
@@ -30,17 +53,18 @@
 		</style>
 	</head>
 	<body>
-		<h1>{{name}}</h1>
-		{{email}}<br>
-		{{tel}}
-
-		<h2>Invoice</h2>
-		<h3>Submitted on {{today}}</h3>
-
-		<h2>Invoice for</h2>
-		Instagram/Facebook Inc./Twitter Inc.
-
-		<h2>Payable to</h2>
+		<span id='title'>INVOICE<br><span id="invoice">INVOICE # {{invoice}}</span></span>
+		<span id="name">{{name}}</span><br/>
+		<div id="address">{% if address_line1 and city and region and postal_code and country %}
+			{{address_line1}}<br />{{address_line2}}<br />{{city}} {{region}} {{postal_code}} {{country}}</div>
+		{% endif %}
+		e: {{email}}<br>
+		t: {{tel}}
+		</h1>
+		
+		<h2>Invoice for {{company}}</h2> 
+		<h3>For Uploaded Content on {{social}}</h3>
+		<h4>Submitted on {{today}}</h4>
 
 		<table>
 			<tr id="table_head">
@@ -65,14 +89,22 @@
 			</tr>
 		</table>
 
+		
 		<div id="payment_info">
-			Payment Information:<br>
-			Venmo: {{venmo}}<br>
-			Paypal: {{paypal}}<br>
-			Mailing Address:
-			<blockquote>{{mail1}}<br>{{mail2}}<br>{{mail3}}</blockquote>
+			<b>Payment Information:</b><br>
+			{% if address_line1 and city and region and postal_code and country %}
+				Make all checks payable to {{name}}.<br />
+			{% endif %}
+			{% if venmo %}
+				<b>Venmo:</b> @{{venmo}}<br />
+			{% endif %}
+			{% if paypal %}
+				<b>Paypal:</b> {{paypal}}<br />
+			{% endif %}
+			Total due in 30 days.
 		</div>
+		
 
-		<div id="total_price">${{ postcount * 57 / 1000.0 }}</div>
+		<div id="total_price"><h2>${{ postcount * 57 / 1000.0 }}</h2></div>
 	</body>
 </html>
