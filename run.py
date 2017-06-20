@@ -108,3 +108,6 @@ def organizeItems(form):
     print posts
     print "....organized!"
     return posts
+
+if __name__ == '__main__':
+    app.run(debug=True)
