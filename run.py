@@ -60,9 +60,6 @@ def hello():
 def woof():
     return "yerp"
 
-if __name__ == "__main__":
-    app.run()
-
 def renderPDF(render, filename):
     options = {
             'print-media-type': '',
