@@ -1,4 +1,4 @@
-import pdfkit, os
+import pdfkit, os, sys, subprocess
 from flask import Flask, request, render_template
 from datetime import datetime
 
@@ -55,7 +55,7 @@ def hello():
                     venmo         = request.form['venmo']         ,
                     paypal        = request.form['paypal']        )
                 pdfname = td.strftime("%Y%m%d%H%M%S.pdf") # figure out how to format
-                filepdf = renderPDF(render, pdfname)
+                filepdf = renderPDF(render, pdfname, WKHTMLTOPDF_CMD)
                 #fax = client.fax.v1.faxes.create(
                 #    from_="+15017250604", #our number
                 #    to=post['fax'], # whatever number
@@ -69,8 +69,8 @@ def hello():
 def woof():
     return "yerp"
 
-def renderPDF(render, filename):
-    pdfkit_config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF_CMD)
+def renderPDF(render, filename, WKHTMLTOPDF_CMD):
+    pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
     options = {
             'print-media-type': '',
             'page-size': 'A4',
