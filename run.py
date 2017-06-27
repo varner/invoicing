@@ -59,8 +59,8 @@ def hello():
                     venmo         = request.form['venmo']         ,
                     paypal        = request.form['paypal']        )
                 pdfname = td.strftime("%Y%m%d%H%M%S.pdf") # figure out how to format
-                filepdf = renderPDF(render, pdfname, WKHTMLTOPDF_CMD)
-                uploadS3(filepdf, pdfname)
+                #filepdf = renderPDF(render, pdfname, WKHTMLTOPDF_CMD)
+                #uploadS3(filepdf, pdfname)
                 # UPLOAD TO S3
                 #fax = client.fax.v1.faxes.create(
                 #    from_="+15017250604", #our number
@@ -84,7 +84,7 @@ def uploadS3(pdf, filename):
                                    headers={'Content-Type': 'application/%s' % (FILE_FORMAT)},
                                    policy='authenticated-read',
                                    reduced_redundancy=True)) 
-    return k.generate_url(expires_in=AWS_EXPIRY, force_http=True)
+    return k.generate_url(expires_in=AWS_EXPIRY, force_http=True)g
 
 def renderPDF(render, filename, WKHTMLTOPDF_CMD):
     pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
