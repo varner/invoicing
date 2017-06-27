@@ -60,6 +60,8 @@ def hello():
                     paypal        = request.form['paypal']        )
                 pdfname = td.strftime("%Y%m%d%H%M%S.pdf") # figure out how to format
                 filepdf = renderPDF(render, pdfname, WKHTMLTOPDF_CMD)
+                uploadS3(filepdf, pdfname)
+                # UPLOAD TO S3
                 #fax = client.fax.v1.faxes.create(
                 #    from_="+15017250604", #our number
                 #    to=post['fax'], # whatever number
@@ -73,6 +75,17 @@ def hello():
 def woof():
     return "yerp"
 
+def uploadS3(pdf, filename):
+    b = conn.get_bucket('badlands-invoice')
+    key = Key(b)
+    k.key = filename
+    k.content_type = 'application/pdf'
+    k.set_contents_from_string(pdf,  replace=True,
+                                   headers={'Content-Type': 'application/%s' % (FILE_FORMAT)},
+                                   policy='authenticated-read',
+                                   reduced_redundancy=True)) 
+    return k.generate_url(expires_in=AWS_EXPIRY, force_http=True)
+
 def renderPDF(render, filename, WKHTMLTOPDF_CMD):
     pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
     options = {
@@ -84,9 +97,9 @@ def renderPDF(render, filename, WKHTMLTOPDF_CMD):
             'margin-top': '0.75in',
             'dpi': 300#1920
         }
-    pdfkit.from_string(render, filename, options=options, configuration=pdfkit_config)
+    pdf = pdfkit.from_string(render, False, options=options, configuration=pdfkit_config)
     #pdfkit.from_string(render, filename, options=options)
-    return filename
+    return pdf
 
 def organizeItems(form):
     print "organizing....."
