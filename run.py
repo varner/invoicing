@@ -4,7 +4,7 @@ from datetime import datetime
 
 # AMAZON SHIT
 from boto.s3.connection import S3Connection
-s3 = S3Connection(os.environ['S3_KEY'], os.environ['S3_SECRET'])
+s3 = S3Connection(os.environ.get('S3_KEY', None), os.environ.get('S3_SECRET', None))
 
 # TWILIO SHIT
 #from twilio.rest import Client
@@ -59,8 +59,8 @@ def hello():
                     venmo         = request.form['venmo']         ,
                     paypal        = request.form['paypal']        )
                 pdfname = td.strftime("%Y%m%d%H%M%S.pdf") # figure out how to format
-                #filepdf = renderPDF(render, pdfname, WKHTMLTOPDF_CMD)
-                #uploadS3(filepdf, pdfname)
+                filepdf = renderPDF(render, pdfname, WKHTMLTOPDF_CMD)
+                uploadS3(filepdf, pdfname)
                 # UPLOAD TO S3
                 #fax = client.fax.v1.faxes.create(
                 #    from_="+15017250604", #our number
