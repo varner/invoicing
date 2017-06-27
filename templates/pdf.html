@@ -70,8 +70,8 @@
 			<tr id="table_head">
 				<th>Description</th>
 				<th>Qty</th>
-				<th>Unit Price</th>
-				<th>Total Price</th>
+				<th>Fees</th>
+				<th>Balance</th>
 			</tr>
 			{% for message in posts %}
 			<tr>
@@ -85,7 +85,7 @@
 			<tr class="subtotal">
 				<td></td>
 				<td></td>
-				<td>Subtotal</td>
+				<td>Balance Due</td>
 				<td>${{ postcount * 57 / 1000.0 }}</td>
 			</tr>
 		</table>
