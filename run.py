@@ -3,8 +3,8 @@ from flask import Flask, request, render_template
 from datetime import datetime
 
 # AMAZON SHIT
-#from boto.s3.connection import S3Connection
-#s3 = S3Connection(os.environ['S3_KEY'], os.environ['S3_SECRET'])
+from boto.s3.connection import S3Connection
+s3 = S3Connection(os.environ['S3_KEY'], os.environ['S3_SECRET'])
 
 # TWILIO SHIT
 #from twilio.rest import Client
