@@ -2,6 +2,10 @@ import pdfkit, os, sys, subprocess
 from flask import Flask, request, render_template
 from datetime import datetime
 
+# AMAZON SHIT
+#from boto.s3.connection import S3Connection
+#s3 = S3Connection(os.environ['S3_KEY'], os.environ['S3_SECRET'])
+
 # TWILIO SHIT
 #from twilio.rest import Client
 #account_sid = "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
@@ -78,9 +82,10 @@ def renderPDF(render, filename, WKHTMLTOPDF_CMD):
             'margin-left': '0.75in',
             'margin-right': '0.75in',
             'margin-top': '0.75in',
-            'dpi': 1920
+            'dpi': 300#1920
         }
     pdfkit.from_string(render, filename, options=options, configuration=pdfkit_config)
+    #pdfkit.from_string(render, filename, options=options)
     return filename
 
 def organizeItems(form):
