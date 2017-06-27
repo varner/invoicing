@@ -6,6 +6,11 @@
 				font-family: Helvetica, Arial, sans-serif;
 			}
 
+         #content {
+            max-width: 800px;
+            margin: 0 auto;
+         }
+
 			#add_post, .payment {
 				cursor: pointer;
 				border: 2px solid black;
@@ -63,6 +68,25 @@
 				padding: .5em;
 			}
 
+         input[type=submit] {
+            outline: 3px solid black;
+            border: 2px solid white;
+            color: black;
+            background: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-transform: uppercase;
+         }
+
+         input[type=submit]:hover {
+            outline: 3px solid black;
+            border: 2px solid white;
+            color: white;
+            background: black;
+            cursor: pointer;
+         }
+
+
 			.delete_cell, .hell {
 				border-bottom: none;
 				color: red;
@@ -81,7 +105,7 @@
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 	</head>
-	<body>
+	<body><div id="content">
 		<h1>INVOICE</h1>
 		Some sort of description. This tool will help you fax your invoices to people! Wow!
 
@@ -496,5 +520,5 @@
 
 			}
 		</script>
-	</body>
+	</div></body>
 </html>

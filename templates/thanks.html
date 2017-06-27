@@ -5,38 +5,64 @@
 			body, input, select {
 				font-family: Helvetica, Arial, sans-serif;
 			}
+
+			#content {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+
+			.address {
+				padding-left:  1.5em;
+				padding-right: 1.5em;
+			}
+
+			a {
+				color: black;
+				text-decoration: none;
+				border-bottom: 2px solid black;
+				font-weight: bold;
+			}
+
+			#container {
+				display: flex;
+				justify-content: space-around;
+			}
+
+			.item {
+				padding: 1em;
+			}
 		</style>
 
 		<title></title>
 	</head>
-	<body>
-		Thank you for using our invoicing service!{% if renders.get('Facebook') or renders.get('Instagram') %} As a courtesy, we've faxed your invoice to Facebook Inc. (the parent company of Facebook and Instagram).{% endif %}
-
-		{% if renders.get('Snapchat') %}<div>
-			<a href="{{renders['Snapchat']}}">Here is your invoice to Snap Inc.!</a>
-			<br>We recommend mailing it to:
-			<blockquote>
-				Corporate secretary
+	<body><div id="content">
+		<h1>Your invoices are ready.</h1>
+		<p>Thank you for using our invoicing service!{% if renders.get('Facebook') or renders.get('Instagram') %} As a courtesy, we've already faxed your invoice to Facebook Inc. (the parent company of Facebook and Instagram).{% endif %}</p>
+		<br>
+		<div id='container'>
+		{% if renders.get('Snapchat') %}<div class="item">
+			<a href="{{renders['Snapchat']}}" download="snap_invoice.pdf">Here is your invoice to Snap Inc.!</a><br>
+			<br>We recommend mailing it to:<br><div class="address">
+				Corporate secretary<br>
 				Snap Inc. Headquarters<br>
 				63 Market Street<br>
 				Venice, CA 90291<br>
 				United States
-			</blockquote>
+			</div>
 		</div>{% endif %}
 
-		{% if renders.get('Twitter') %}<div>
-			<a href="{{renders['Twitter']}}">Here is your invoice to Twitter Inc.!</a>
-			<br>We recommend mailing it to:
-			<blockquote>Corporate secretary<br>
+		{% if renders.get('Twitter') %}<div class="item">
+			<a href="{{renders['Twitter']}}" download="twitter_invoice.pdf">Here is your invoice to Twitter Inc.!</a><br>
+			<br>We recommend mailing it to:<br><div class="address">Corporate secretary<br>
 				Twitter, Inc. <br>
 				1355 Market Street<br> 
 				Suite 900 <br>
 				San Francisco, CA 94103<br> 
 				United States
-			</blockquote>
+			</div>
 		</div>{% endif %}
+	</div>
 
-
-		Have a beautiful day!
-	</body>
+		<p>Please download your invoice within <b>30 minutes</b>, as they will be deleted after due to space constraints. Have a beautiful day!</p>
+	</div></body>
 </html>

@@ -1,4 +1,4 @@
-import os, sys, subprocess
+import os, sys, subprocess, hashlib
 import pdfkit
 from flask import Flask, request, render_template
 from datetime import datetime
@@ -61,7 +61,7 @@ def hello():
                     postal_code   = request.form['postal-code']   ,  
                     venmo         = request.form['venmo']         ,
                     paypal        = request.form['paypal']        )
-                pdfname = td.strftime("%Y%m%d%H%M%S.pdf") # figure out how to format
+                pdfname = hashlib.sha1(td.strftime("%Y%m%d%H%M%S.pdf")).hexdigest() # figure out how to format
                 filepdf = renderPDF(render, pdfname, WKHTMLTOPDF_CMD)
                 # UPLOAD TO S3
                 url = uploadS3(filepdf, pdfname)
@@ -91,7 +91,7 @@ def uploadS3(pdf, filename):
     k.key = filename
     k.set_contents_from_string(pdf,replace=True,
                                    headers={'Content-Type': 'application/pdf'},
-                                   policy='authenticated-read',
+                                   policy='public-read',
                                    reduced_redundancy=True)
     return k.generate_url(expires_in=600, force_http=True)
 
