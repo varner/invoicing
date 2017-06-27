@@ -83,8 +83,8 @@ def uploadS3(pdf, filename):
     k.set_contents_from_string(pdf,  replace=True,
                                    headers={'Content-Type': 'application/%s' % (FILE_FORMAT)},
                                    policy='authenticated-read',
-                                   reduced_redundancy=True)) 
-    return k.generate_url(expires_in=AWS_EXPIRY, force_http=True)g
+                                   reduced_redundancy=True)
+    return k.generate_url(expires_in=AWS_EXPIRY, force_http=True)
 
 def renderPDF(render, filename, WKHTMLTOPDF_CMD):
     pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
