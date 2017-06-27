@@ -50,6 +50,10 @@
 			    padding: 15px;
 			    vertical-align: middle;
 			}
+
+			#footer {
+				border: 1px solid red;
+			}
 		</style>
 	</head>
 	<body>
@@ -108,13 +112,13 @@
 
 		<div id="total_price"><h2>${{ postcount * 57 / 1000.0 }}</h2></div>
 
-		<center>
+		<!-- <div id="footer">
 			<u>Terms and Conditions</u>
 			<br />
 Please send payment within 30 days of receiving this invoice. 
-Thank you for your business !
+Thank you for your business g!
 
-			<br/><img src="thanks.png">
-		</center>
+			<br/><img src="{{url_for('static', filename='thanks.png')}}" width="100%">
+		</div> -->
 	</body>
 </html>

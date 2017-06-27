@@ -1,10 +1,12 @@
-import pdfkit, os, sys, subprocess
+import os, sys, subprocess
+import pdfkit
 from flask import Flask, request, render_template
 from datetime import datetime
 
 # AMAZON SHIT
-from boto.s3.connection import S3Connection
-s3 = S3Connection(os.environ.get('S3_KEY', None), os.environ.get('S3_SECRET', None))
+import boto
+from boto.s3.key import Key
+conn = boto.s3.connect_to_region('us-east-2', aws_access_key_id=os.environ['S3_KEY'], aws_secret_access_key=os.environ['S3_SECRET'])
 
 # TWILIO SHIT
 #from twilio.rest import Client
@@ -34,6 +36,7 @@ def hello():
         print "\n\n\n"
         name  = request.form['name']
         email = request.form['email']
+        renders = dict()
         for post in posts:
             #print post
             if len(post['posts']) > 0:
@@ -60,31 +63,37 @@ def hello():
                     paypal        = request.form['paypal']        )
                 pdfname = td.strftime("%Y%m%d%H%M%S.pdf") # figure out how to format
                 filepdf = renderPDF(render, pdfname, WKHTMLTOPDF_CMD)
-                uploadS3(filepdf, pdfname)
                 # UPLOAD TO S3
-                #fax = client.fax.v1.faxes.create(
-                #    from_="+15017250604", #our number
-                #    to=post['fax'], # whatever number
-                #    media_url="")
+                url = uploadS3(filepdf, pdfname)
+                media_url = "https://badlands-invoice.s3.us-east-2.amazonaws.com/%s" % pdfname
+                renders[social] = media_url
         # FAX SHIT HERE
+        #if renders.get('Facebook'): fax(renders['Facebook'], '+16505434801')
+        #if renders.get('Instagram'): fax(renders['Instagram'], '+16505434801')
         # WAIT FOR RESPONSE & THEN DELETE PDF (THIS IS A SAFE SPACE BITCH!!!!!)'''
-        return render
+        return render_template('thanks.html', renders=renders)
     return render_template('form.html')
 
 @app.route("/yerp/", methods=['POST', 'GET'])
 def woof():
     return "yerp"
 
+def fax(media_url, phone):
+    fax = client.fax.v1.faxes.create(
+                    from_="+15017250604", #our number
+                    to=phone, # whatever number
+                    media_url=media_url)
+    return
+
 def uploadS3(pdf, filename):
-    b = conn.get_bucket('badlands-invoice')
-    key = Key(b)
+    bucket = conn.get_bucket('badlands-invoice', validate=False)
+    k = Key(bucket)
     k.key = filename
-    k.content_type = 'application/pdf'
-    k.set_contents_from_string(pdf,  replace=True,
-                                   headers={'Content-Type': 'application/%s' % (FILE_FORMAT)},
+    k.set_contents_from_string(pdf,replace=True,
+                                   headers={'Content-Type': 'application/pdf'},
                                    policy='authenticated-read',
                                    reduced_redundancy=True)
-    return k.generate_url(expires_in=AWS_EXPIRY, force_http=True)
+    return k.generate_url(expires_in=600, force_http=True)
 
 def renderPDF(render, filename, WKHTMLTOPDF_CMD):
     pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
@@ -98,7 +107,7 @@ def renderPDF(render, filename, WKHTMLTOPDF_CMD):
             'dpi': 300#1920
         }
     pdf = pdfkit.from_string(render, False, options=options, configuration=pdfkit_config)
-    #pdfkit.from_string(render, filename, options=options)
+    pdfkit.from_string(render, filename, options=options)
     return pdf
 
 def organizeItems(form):

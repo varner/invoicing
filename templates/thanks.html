@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			body, input, select {
+				font-family: Helvetica, Arial, sans-serif;
+			}
+		</style>
+
+		<title></title>
+	</head>
+	<body>
+		Thank you for using our invoicing service!{% if renders.get('Facebook') or renders.get('Instagram') %} As a courtesy, we've faxed your invoice to Facebook Inc. (the parent company of Facebook and Instagram).{% endif %}
+
+		{% if renders.get('Snapchat') %}<div>
+			<a href="{{renders['Snapchat']}}">Here is your invoice to Snap Inc.!</a>
+			<br>We recommend mailing it to:
+			<blockquote>
+				Corporate secretary
+				Snap Inc. Headquarters<br>
+				63 Market Street<br>
+				Venice, CA 90291<br>
+				United States
+			</blockquote>
+		</div>{% endif %}
+
+		{% if renders.get('Twitter') %}<div>
+			<a href="{{renders['Twitter']}}">Here is your invoice to Twitter Inc.!</a>
+			<br>We recommend mailing it to:
+			<blockquote>Corporate secretary<br>
+				Twitter, Inc. <br>
+				1355 Market Street<br> 
+				Suite 900 <br>
+				San Francisco, CA 94103<br> 
+				United States
+			</blockquote>
+		</div>{% endif %}
+
+
+		Have a beautiful day!
+	</body>
+</html>
