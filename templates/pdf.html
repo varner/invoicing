@@ -51,8 +51,16 @@
 			    vertical-align: middle;
 			}
 
-			#footer {
-				border: 1px solid red;
+			footer {
+				text-align: center;
+				margin: 2em;
+			}
+
+			footer u {
+				color: black;
+				text-decoration: none;
+				border-bottom: 2px solid black;
+				font-weight: bold;
 			}
 		</style>
 	</head>
@@ -112,13 +120,13 @@
 
 		<div id="total_price"><h2>${{ postcount * 57 / 1000.0 }}</h2></div>
 
-		<!-- <div id="footer">
+		<footer>
 			<u>Terms and Conditions</u>
 			<br />
 Please send payment within 30 days of receiving this invoice. 
-Thank you for your business g!
+Thank you for your business !
 
 			<br/><img src="{{url_for('static', filename='thanks.png')}}" width="100%">
-		</div> -->
+		</footer>
 	</body>
 </html>
