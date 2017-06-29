@@ -95,7 +95,7 @@ def uploadS3(pdf, filename):
                                    reduced_redundancy=True)
     return k.generate_url(expires_in=600, force_http=True)
 
-def renderPDF(render, filename, WKHTMLTOPDF_CMD):
+def renderPteDF(render, filename, WKHTMLTOPDF_CMD):
     pdfkit_config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_CMD)
     options = {
             'print-media-type': '',
@@ -107,7 +107,7 @@ def renderPDF(render, filename, WKHTMLTOPDF_CMD):
             'dpi': 300#1920
         }
     pdf = pdfkit.from_string(render, False, options=options, configuration=pdfkit_config)
-    pdfkit.from_string(render, filename, options=options)
+    #pdfkit.from_string(render, filename, options=options)
     return pdf
 
 def organizeItems(form):
